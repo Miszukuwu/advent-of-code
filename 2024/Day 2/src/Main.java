@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    static boolean isLevelsSafe(ArrayList<Integer> levels){
+    static boolean isLevelsSafe(ArrayList<Integer> levels, int indexToRemove){
+        if (indexToRemove != -1){
+            levels.remove(indexToRemove);
+        }
         int increase = levels.get(1) - levels.get(0);
         boolean isIncreasing = Math.abs(increase) == increase;
-        int numberOfErrors = 0;
         for (int i = 0; i < levels.size()-1; i++) {
-            if (numberOfErrors > 1){
-                return false;
-            }
             int difference = levels.get(i+1)-levels.get(i);
             if (Math.abs(difference) < 1 || Math.abs(difference) > 3 || difference > 0 != isIncreasing) {
-                numberOfErrors++;
-                levels.remove(i + 1);
-                i = -1;
+                return false;
             }
         }
         return true;
@@ -32,8 +29,12 @@ public class Main {
             for (String s : levelsString) {
                 levels.add(Integer.parseInt(s));
             }
-            if (isLevelsSafe(levels))
-                sum++;
+            for (int i = -1; i < levels.size(); i++) {
+                if (isLevelsSafe(new ArrayList<>(levels), i)){
+                    sum++;
+                    break;
+                }
+            }
         }
         System.out.println(sum);
     }
