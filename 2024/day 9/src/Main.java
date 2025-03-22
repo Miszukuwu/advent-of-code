@@ -12,36 +12,44 @@ public class Main {
         for (int i = 0, j = 0; i < disk.length; i+=2,j++) {
             fileBlocks[j] = new Block(j, (int)disk[i]-'0', (i+1<disk.length-1)?(int)disk[i+1]-'0':0);
         }
-        String compactedFIle = "";
+        ArrayList<Integer> compactedFileList = new ArrayList<>();
         for (Block block : fileBlocks) {
             for (int i = 0; i < block.size; i++) {
                 System.out.print(block.id);
-                compactedFIle += block.id;
+                compactedFileList.add(block.id);
             }
             for (int i = 0; i < block.freeSpace; i++) {
                 System.out.print(".");
-                compactedFIle += ".";
+                compactedFileList.add(-1);
             }
         }
         System.out.println();
-        for (int i = compactedFIle.length()-1; i >= 0; i--) {
-            int length = compactedFIle.length();
-            int spaceIndex = compactedFIle.indexOf('.');
-            if (spaceIndex>i)
-                break;
-            compactedFIle = compactedFIle.substring(0, spaceIndex) + compactedFIle.charAt(i) + compactedFIle.substring(spaceIndex+1, i);
-            for (int j = 0; j <  length - i; j++) {
-                compactedFIle += '.';
+        for (int i = 0; i < compactedFileList.size(); i++) {
+            if (compactedFileList.get(i) == -1) {
+                int value = -1;
+                while (value == -1){
+                    value = compactedFileList.removeLast();
+                }
+                if (compactedFileList.size() <= i){
+                    compactedFileList.add(value);
+                    break;
+                }
+                compactedFileList.remove(i);
+                compactedFileList.add(i, value);
             }
-//            System.out.println(compactedFIle);
         }
-        int sum = 0;
-        for (int i = 0; i < compactedFIle.length(); i++) {
-            if (compactedFIle.charAt(i)=='.'){
-                break;
-            }
-            sum += (compactedFIle.charAt(i)-'0')*i;
+        for (Integer i : compactedFileList) {
+           if (i != -1){
+               System.out.print(i);
+           } else {
+               System.out.print('.');
+           }
         }
+        long sum = 0;
+        for (int i = 0; i < compactedFileList.size(); i++) {
+            sum += i*compactedFileList.get(i);
+        }
+        System.out.println();
         System.out.println(sum);
     }
 }
