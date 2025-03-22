@@ -24,19 +24,58 @@ public class Main {
             }
         }
         System.out.println();
-        for (int i = 0; i < compactedFileList.size(); i++) {
-            if (compactedFileList.get(i) == -1) {
-                int value = -1;
-                while (value == -1){
-                    value = compactedFileList.removeLast();
-                }
-                if (compactedFileList.size() <= i){
-                    compactedFileList.add(value);
+//        for (int i = 0; i < compactedFileList.size(); i++) {
+//            if (compactedFileList.get(i) == -1) {
+//                int value = -1;
+//                while (value == -1){
+//                    value = compactedFileList.removeLast();
+//                }
+//                if (compactedFileList.size() <= i){
+//                    compactedFileList.add(value);
+//                    break;
+//                }
+//                compactedFileList.remove(i);
+//                compactedFileList.add(i, value);
+//            }
+//        }
+        for (int i = compactedFileList.size() - 1; i > 0; i--) {
+            int id = compactedFileList.get(i);
+            if (id == -1)
+                continue;
+            int startIndex = i;
+            while (startIndex > 0 && compactedFileList.get(startIndex) == id) {
+                startIndex--;
+            }
+            int discSize = i - startIndex;
+            int freeSpace = 0, freeSpaceIndex = 0;
+            for (int j = 0; j < i; j++) {
+                if (freeSpace >= discSize) {
                     break;
                 }
-                compactedFileList.remove(i);
-                compactedFileList.add(i, value);
+                if (freeSpace > 0 && compactedFileList.get(j) != -1) {
+                    freeSpace = 0;
+                } else if (compactedFileList.get(j) == -1) {
+                    if (freeSpace == 0) {
+                        freeSpaceIndex = j;
+                    }
+                    freeSpace++;
+                }
             }
+            if (freeSpace == 0 || freeSpace < discSize) {
+                i = startIndex + 1;
+                continue;
+            }
+            for (int j = 0; j < freeSpace; j++) {
+                compactedFileList.remove(freeSpaceIndex);
+            }
+            for (int j = 0; j < discSize; j++) {
+                compactedFileList.add(freeSpaceIndex, id);
+            }
+            for (int j = 0; j < discSize; j++) {
+                compactedFileList.add(i + 1, -1);
+                compactedFileList.remove(i--);
+            }
+            i++;
         }
         for (Integer i : compactedFileList) {
            if (i != -1){
@@ -47,7 +86,8 @@ public class Main {
         }
         long sum = 0;
         for (int i = 0; i < compactedFileList.size(); i++) {
-            sum += i*compactedFileList.get(i);
+            if (compactedFileList.get(i) != -1)
+                sum += i*compactedFileList.get(i);
         }
         System.out.println();
         System.out.println(sum);
