@@ -12,16 +12,13 @@ public class Trailhead {
 
     public final int x, y;
 
-    ArrayList<String> reachedCoordinates = new ArrayList<>();
-
     public Trailhead(int x, int y) {
         this.x = x;
         this.y = y;
     }
     void searchForPaths(final ArrayList<ArrayList<Integer>> map, int currentX, int currentY, int currentHeight, Direction lastMove) {
         System.out.println("Current pos: "+currentX+" "+currentY);
-        if (map.get(currentY).get(currentX) == 9 && !reachedCoordinates.contains(currentX+" "+currentY)){
-            reachedCoordinates.add(currentX+" "+currentY);
+        if (map.get(currentY).get(currentX) == 9){
             score++;
             return;
         }
