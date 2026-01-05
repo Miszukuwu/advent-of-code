@@ -28,3 +28,4 @@ replay_pid*
 [Oo]bj/
 [Bb]in/
 data.txt
+*.exe
