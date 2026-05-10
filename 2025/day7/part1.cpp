@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void printMap(vector<vector<char>>& map) {
+void printManifold(vector<vector<char>>& map) {
     for (size_t i = 0; i < map.size(); i++) {
         if (i < 10) {
             cout << '0';
@@ -20,7 +20,7 @@ void printMap(vector<vector<char>>& map) {
     }
 }
 template <typename T>
-bool vectorContains(vector<T>& vect, T searched) {
+bool vectorContainsCoords(vector<T>& vect, T searched) {
     for (int i = 0; i < vect.size(); i++) {
         if (vect[i] == searched) {
             return true;
@@ -44,7 +44,7 @@ int main() {
         }
     }
     file.close();
-    printMap(map);
+    printManifold(map);
     cout << "Map loaded, Calculating... \n";
     vector<coords> activeBeams{coords(start.first, start.second)};
     while (activeBeams.size() > 0) {
@@ -56,8 +56,8 @@ int main() {
                 break;
             }
             if (map[currentBeam.first + 1][currentBeam.second] == '^') {
-                if (!vectorContains(activeBeams, coords(currentBeam.first + 1, currentBeam.second - 1))) {
-                    if (!vectorContains(activeBeams, coords(currentBeam.first + 1, currentBeam.second + 1))) {
+                if (!vectorContainsCoords(activeBeams, coords(currentBeam.first + 1, currentBeam.second - 1))) {
+                    if (!vectorContainsCoords(activeBeams, coords(currentBeam.first + 1, currentBeam.second + 1))) {
                         activeBeams.emplace_back(currentBeam.first + 1, currentBeam.second + 1);
                         map[activeBeams[j].first + 1][activeBeams[j].second + 1] = '|';
                     }
@@ -65,7 +65,7 @@ int main() {
                     activeBeams[j].second--;
                     map[activeBeams[j].first][activeBeams[j].second] = '|';
                 } else {
-                    if (!vectorContains(activeBeams, coords(currentBeam.first + 1, currentBeam.second + 1))) {
+                    if (!vectorContainsCoords(activeBeams, coords(currentBeam.first + 1, currentBeam.second + 1))) {
                         activeBeams[j].first++;
                         activeBeams[j].second++;
                         map[activeBeams[j].first][activeBeams[j].second] = '|';
@@ -84,7 +84,7 @@ int main() {
         }
     }
 
-    printMap(map);
+    printManifold(map);
     long long result = 0;
     for (size_t i = 0; i < map.size(); i++) {
         for (size_t j = 0; j < map[j].size(); j++) {
