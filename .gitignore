@@ -24,9 +24,10 @@ hs_err_pid*
 replay_pid*
 
 **/.idea/*
-**/.vscode/*
+.vscode/
 
 [Oo]bj/
 [Bb]in/
 data.txt
 *.exe
+*.out
